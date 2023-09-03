@@ -137,7 +137,7 @@ func ImpersonateProcessToken(pid int32) error {
 	return nil
 }
 // GetUserHomes() returns 用户|用户home 用户|explorer's pid ，err
-func GetUserHomes() (map[string]string,map[string]string, error) {
+func GetUserHomes() (map[string]string,map[string]int32, error) {
 	
 	// 获取所有进程列表
 	processes, err := process.Processes()
