@@ -45,7 +45,9 @@ const (
 	SECURITY_IMPERSONATION_LEVEL int    = 2
 	CSIDL_PROFILE                       = 0x28
 )
-
+func RevertToSelf() {
+	procRevertToSelf.Call()
+}
 func getCurrentUser() (string, error) {
 	usernameBuf := make([]uint16, 256)
 	var size uint32 = uint32(len(usernameBuf))
@@ -174,7 +176,7 @@ func GetUserHomes() (map[string]string,map[string]string, error) {
 				}
 
 				//回退权限
-				procRevertToSelf.Call()
+				RevertToSelf() 
 			} else {
 				//该用户已经获取过了
 				//fmt.Print("[-] The user is signed ")
