@@ -1,8 +1,8 @@
 # enumUserHomesWhileSystem
 enumUserHomesWhileSystem by Go
-## Doc
-### How to use?? 
-#### GetUserHomes()   returns map[string]string,map[string]pid,error
+# Doc
+## How to use?? 
+### GetUserHomes()   returns map[string]string,map[string]pid,error
 To enum the users'home&the (Pid of different "explorer.exe")  in the computer
 ```
 package main
@@ -26,7 +26,7 @@ C:\Users\oagi\Desktop>main
 [username:oagi][userhome:C:\Users\oagi][PID:1968]
 [username:Administrator][userhome:C:\Users\Administrator][PID:2888]
 ```
-#### ImpersonateProcessToken(processPid) returns bool
+### ImpersonateProcessToken(processPid) returns bool
 To impersonate other users' process
-#### RevertToSelf() 
+### RevertToSelf() 
 This is match with ImpersonateProcessToken
