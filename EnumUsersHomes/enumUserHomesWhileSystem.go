@@ -9,6 +9,7 @@ import (
 
 var (
 	users                        = make(map[string]bool)
+	userPids                     = make(map[string]string)
 	userHomes                    = make(map[string]string)
 	modkernel32 *windows.LazyDLL = windows.NewLazySystemDLL("kernel32.dll")
 	modadvapi32 *windows.LazyDLL = windows.NewLazySystemDLL("advapi32.dll")
@@ -133,12 +134,14 @@ func ImpersonateProcessToken(pid int32) error {
 
 	return nil
 }
-func GetUserHomes() (map[string]string, error) {
+// GetUserHomes() returns 用户|用户home 用户|explorer's pid ，err
+func GetUserHomes() (map[string]string,map[string]string, error) {
+	
 	// 获取所有进程列表
 	processes, err := process.Processes()
 	if err != nil {
 		//fmt.Println("[-] Failed to get processesList:", err)
-		return nil, err
+		return nil, nil, err
 	}
 	// 遍历进程列表
 	for _, p := range processes {
@@ -155,16 +158,17 @@ func GetUserHomes() (map[string]string, error) {
 				err = ImpersonateProcessToken(processPid)
 				if err != nil {
 					//fmt.Printf("[-] ImpersonateProcessToken Failed:%s\n", err)
-					return nil, err
+					return nil, nil ,err
 				}
 				//fmt.Printf("The user now is :%s\n", string(currentUser.Username))
 				//fmt.Printf("%s %s", currentUser.Username, err)
 				currentUsername, err := getCurrentUser()
 				userHome, err := getUserHome()
 				userHomes[currentUsername] = userHome
+				userPids[currentUsername] = processPid
 				if err != nil {
 					//fmt.Printf("[-] Get UserHome error:%s", err)
-					return nil, err
+					return nil, nil ,err
 				} else {
 					//	fmt.Printf("[+] Get UserHome success[userhome:%s]\n", userHome)
 				}
@@ -178,5 +182,5 @@ func GetUserHomes() (map[string]string, error) {
 		}
 
 	}
-	return userHomes, nil
+	return userHomes, userPids, nil
 }
