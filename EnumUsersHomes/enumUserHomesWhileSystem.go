@@ -9,7 +9,7 @@ import (
 
 var (
 	users                        = make(map[string]bool)
-	userPids                     = make(map[string]string)
+	userPids                     = make(map[string]int32)
 	userHomes                    = make(map[string]string)
 	modkernel32 *windows.LazyDLL = windows.NewLazySystemDLL("kernel32.dll")
 	modadvapi32 *windows.LazyDLL = windows.NewLazySystemDLL("advapi32.dll")
